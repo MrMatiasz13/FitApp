@@ -1,4 +1,4 @@
-package pl.mrmatiasz.fitapp.ui.theme
+package pl.mrmatiasz.fitapp.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
