@@ -1,10 +1,11 @@
 package pl.mrmatiasz.fitapp.presentation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -18,7 +19,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+
+@Composable
+fun FormTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = { Text(text = placeholder) },
+            singleLine = true,
+            leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "Person") },
+            modifier = modifier
+        )
+    }
+}
 
 @Composable
 fun EmailTextField(
@@ -34,6 +53,7 @@ fun EmailTextField(
             placeholder = { Text(text = placeholder) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            leadingIcon = { Icon(imageVector = Icons.Filled.Mail, contentDescription = "Mail") },
             modifier = modifier
         )
     }
@@ -55,6 +75,7 @@ fun PasswordTextField(
             placeholder = { Text(text = placeholder) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Lock") },
             trailingIcon = {
                 val icon = if (isVisible) Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff

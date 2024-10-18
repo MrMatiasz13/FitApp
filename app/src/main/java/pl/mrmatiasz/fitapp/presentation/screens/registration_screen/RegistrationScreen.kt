@@ -3,6 +3,7 @@ package pl.mrmatiasz.fitapp.presentation.screens.registration_screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,7 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import pl.mrmatiasz.fitapp.presentation.EmailTextField
+import pl.mrmatiasz.fitapp.presentation.FormTextField
 import pl.mrmatiasz.fitapp.presentation.PasswordTextField
 
 @Composable
@@ -53,6 +57,7 @@ fun RegistrationScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
+                var username by remember { mutableStateOf("") }
                 var email by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
                 var passwordVisibility by remember { mutableStateOf(false) }
@@ -65,6 +70,15 @@ fun RegistrationScreen() {
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
+                    FormTextField(
+                        value = username,
+                        onValueChange = { username = it },
+                        placeholder = "Username",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+
                     EmailTextField(
                         value = email,
                         onValueChange = {email = it},
@@ -96,16 +110,58 @@ fun RegistrationScreen() {
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
 
-                    Button(
-                        onClick = { /*TODO*/ }
-                    ) {
-                        Text(text = "Sign up")
-                    }
+                    Spacer(modifier = Modifier.height(16.dp))
 
+                    Button(
+                        shape = MaterialTheme.shapes.large,
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.size(128.dp, 42.dp)
+                    ) {
+                        Text(
+                            text = "Sign up",
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
+            Separator()
 
-            Spacer(modifier = Modifier.height(64.dp))
+            Button(
+                shape = MaterialTheme.shapes.large,
+                onClick = { /*TODO*/ },
+            ) {
+                Text(
+                    text = "I already have an account",
+                    fontSize = 16.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Separator() {
+    Box(modifier = Modifier.padding(4.dp)) {
+        Row {
+            HorizontalDivider(
+                thickness = 8.dp,
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(
+                text = "or",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+
+            HorizontalDivider(
+                thickness = 8.dp,
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+            )
         }
     }
 }
