@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
+import pl.mrmatiasz.fitapp.presentation.navigation.Navigation
 import pl.mrmatiasz.fitapp.presentation.screens.registration_screen.RegistrationScreen
 import pl.mrmatiasz.fitapp.presentation.ui.theme.FitAppTheme
 
@@ -12,8 +14,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navHostController = rememberNavController()
+
             FitAppTheme(darkTheme = true, dynamicColor = false) {
-                RegistrationScreen()
+                Navigation(navHostController)
             }
         }
     }
