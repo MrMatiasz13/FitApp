@@ -1,13 +1,14 @@
 package pl.mrmatiasz.fitapp.presentation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,40 +22,33 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EmailTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             placeholder = { Text(text = placeholder) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
+            modifier = modifier
         )
     }
 }
 
 @Composable
 fun PasswordTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    isVisible: Boolean
+    isVisible: Boolean,
+    onIconClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -62,16 +56,16 @@ fun PasswordTextField(
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
-                val icon = if(isVisible) Icons.Filled.Visibility
-                    else Icons.Filled.VisibilityOff
+                val icon = if (isVisible) Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
 
-                Icon(imageVector = icon, contentDescription = "Visibility icon")
+                IconButton(onClick = { onIconClick() }) {
+                    Icon(imageVector = icon, contentDescription = "Visibility icon")
+                }
             },
-            visualTransformation = if(isVisible) VisualTransformation.None
-                else PasswordVisualTransformation(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
+            visualTransformation = if (isVisible) VisualTransformation.None
+            else PasswordVisualTransformation(),
+            modifier = modifier
         )
     }
 }
@@ -83,6 +77,7 @@ private fun ComponentsPreview() {
         value = "",
         onValueChange = {},
         placeholder = "Password",
-        isVisible = false
+        isVisible = false,
+        onIconClick = {}
     )
 }
