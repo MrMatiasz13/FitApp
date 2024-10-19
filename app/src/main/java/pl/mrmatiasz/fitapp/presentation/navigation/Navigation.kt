@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import pl.mrmatiasz.fitapp.presentation.screens.login_screen.LoginScreen
 import pl.mrmatiasz.fitapp.presentation.screens.registration_screen.RegistrationScreen
 
 @Composable
@@ -13,7 +14,11 @@ fun Navigation(navHostController: NavHostController) {
         startDestination = RegistrationScreenRoute
     ) {
         composable<RegistrationScreenRoute> {
-            RegistrationScreen()
+            RegistrationScreen(navHostController)
+        }
+
+        composable<LoginScreenRoute> {
+            LoginScreen(navHostController)
         }
     }
 }

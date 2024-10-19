@@ -1,13 +1,19 @@
 package pl.mrmatiasz.fitapp.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +25,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.material3.Checkbox
+
+@Composable
+fun Logo() {
+    Icon(
+        imageVector = Icons.Filled.AccountCircle,
+        contentDescription = "Account circle",
+        modifier = Modifier.size(150.dp)
+    )
+}
 
 @Composable
 fun FormTextField(
@@ -91,14 +109,52 @@ fun PasswordTextField(
     }
 }
 
+@Composable
+fun Separator() {
+    Box(modifier = Modifier.padding(4.dp)) {
+        Row {
+            HorizontalDivider(
+                thickness = 8.dp,
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(
+                text = "or",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+
+            HorizontalDivider(
+                thickness = 8.dp,
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
+            )
+        }
+    }
+}
+
+@Composable
+fun Checkbox(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    text: String
+) {
+    Row {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange
+        )
+
+        Text(text = text)
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun ComponentsPreview() {
-    PasswordTextField(
-        value = "",
-        onValueChange = {},
-        placeholder = "Password",
-        isVisible = false,
-        onIconClick = {}
-    )
+    TODO()
 }

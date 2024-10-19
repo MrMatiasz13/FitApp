@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import pl.mrmatiasz.fitapp.presentation.navigation.Navigation
-import pl.mrmatiasz.fitapp.presentation.screens.registration_screen.RegistrationScreen
 import pl.mrmatiasz.fitapp.presentation.ui.theme.FitAppTheme
 
 class MainActivity : ComponentActivity() {
