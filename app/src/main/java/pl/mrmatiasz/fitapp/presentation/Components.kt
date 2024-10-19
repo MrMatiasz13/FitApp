@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 
 @Composable
 fun Logo() {
@@ -43,7 +44,9 @@ fun FormTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: String
+    placeholder: String,
+    isError: Boolean,
+    errorMessage: String
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
@@ -54,6 +57,16 @@ fun FormTextField(
             leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "Person") },
             modifier = modifier
         )
+
+        if (isError) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .align(Alignment.End)
+            )
+        }
     }
 }
 
@@ -62,7 +75,9 @@ fun EmailTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: String
+    placeholder: String,
+    isError: Boolean,
+    errorMessage: String
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
@@ -74,6 +89,16 @@ fun EmailTextField(
             leadingIcon = { Icon(imageVector = Icons.Filled.Mail, contentDescription = "Mail") },
             modifier = modifier
         )
+
+        if (isError) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .align(Alignment.End)
+            )
+        }
     }
 }
 
@@ -84,7 +109,9 @@ fun PasswordTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     isVisible: Boolean,
-    onIconClick: () -> Unit
+    onIconClick: () -> Unit,
+    isError: Boolean,
+    errorMessage: String
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
@@ -106,6 +133,16 @@ fun PasswordTextField(
             else PasswordVisualTransformation(),
             modifier = modifier
         )
+
+        if (isError) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .align(Alignment.End)
+            )
+        }
     }
 }
 
@@ -156,5 +193,13 @@ fun Checkbox(
 @Preview(showBackground = true)
 @Composable
 private fun ComponentsPreview() {
-    TODO()
+    PasswordTextField(
+        value = "",
+        onValueChange = {},
+        placeholder = "Password",
+        isVisible = false,
+        onIconClick = { /*TODO*/ },
+        isError = true,
+        errorMessage = "Test error message"
+    )
 }

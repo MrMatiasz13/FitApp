@@ -68,6 +68,8 @@ fun LoginScreen(
                         value = email,
                         onValueChange = { email = it },
                         placeholder = "Email",
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -79,6 +81,8 @@ fun LoginScreen(
                         placeholder = "Password",
                         isVisible = passwordVisibility,
                         onIconClick = { passwordVisibility = !passwordVisibility },
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)

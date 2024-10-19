@@ -68,6 +68,8 @@ fun RegistrationScreen(
                         value = username,
                         onValueChange = { username = it },
                         placeholder = "Username",
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -77,6 +79,8 @@ fun RegistrationScreen(
                         value = email,
                         onValueChange = {email = it},
                         placeholder = "Email",
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -88,6 +92,8 @@ fun RegistrationScreen(
                         placeholder = "Password",
                         isVisible = passwordVisibility,
                         onIconClick = { passwordVisibility = !passwordVisibility },
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -99,6 +105,8 @@ fun RegistrationScreen(
                         placeholder = "Repeat password",
                         isVisible = repeatPasswordVisibility,
                         onIconClick = { repeatPasswordVisibility = !repeatPasswordVisibility },
+                        isError = false,
+                        errorMessage = "",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
