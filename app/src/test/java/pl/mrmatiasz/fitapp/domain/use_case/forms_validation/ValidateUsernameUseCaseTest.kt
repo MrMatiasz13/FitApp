@@ -20,4 +20,11 @@ class ValidateUsernameUseCaseTest {
 
         assertEquals(false, result.isSuccess)
     }
+
+    @Test
+    fun `username is valid, return success`() {
+        val result = usernameValidation.execute("Username")
+
+        assertEquals(true, result.isSuccess)
+    }
 }

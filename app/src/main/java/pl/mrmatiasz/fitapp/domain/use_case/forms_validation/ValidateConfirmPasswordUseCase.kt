@@ -1,9 +1,9 @@
 package pl.mrmatiasz.fitapp.domain.use_case.forms_validation
 
-class ValidateRepeatedPasswordUseCase {
+class ValidateConfirmPasswordUseCase {
 
-    fun execute(password: String, repeatedPassword: String): ValidationResult {
-        if(password != repeatedPassword) {
+    fun execute(password: String, confirmPassword: String): ValidationResult {
+        if(password != confirmPassword) {
             return ValidationResult(
                 isSuccess = false,
                 errorMessage = "The passwords don't match"

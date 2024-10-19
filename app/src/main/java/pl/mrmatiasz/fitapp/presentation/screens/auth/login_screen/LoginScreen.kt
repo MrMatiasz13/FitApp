@@ -1,15 +1,16 @@
-package pl.mrmatiasz.fitapp.presentation.screens.registration_screen
+package pl.mrmatiasz.fitapp.presentation.screens.auth.login_screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,17 +25,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import pl.mrmatiasz.fitapp.presentation.EmailTextField
-import pl.mrmatiasz.fitapp.presentation.FormTextField
 import pl.mrmatiasz.fitapp.presentation.Logo
 import pl.mrmatiasz.fitapp.presentation.PasswordTextField
 import pl.mrmatiasz.fitapp.presentation.Separator
-import pl.mrmatiasz.fitapp.presentation.navigation.LoginScreenRoute
+import androidx.compose.material3.Checkbox
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import pl.mrmatiasz.fitapp.presentation.navigation.RegistrationScreenRoute
+import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
 
 @Composable
-fun RegistrationScreen(
-    navController: NavController
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background
@@ -51,76 +56,72 @@ fun RegistrationScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Box(modifier = Modifier.fillMaxWidth()) {
-                var username by remember { mutableStateOf("") }
-                var email by remember { mutableStateOf("") }
-                var password by remember { mutableStateOf("") }
+                val formState = viewModel.formState
+
                 var passwordVisibility by remember { mutableStateOf(false) }
-                var repeatPassword by remember { mutableStateOf("") }
-                var repeatPasswordVisibility by remember { mutableStateOf(false) }
+                var checked by remember { mutableStateOf(false) }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
                 ) {
-                    FormTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        placeholder = "Username",
-                        isError = false,
-                        errorMessage = "",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
-
                     EmailTextField(
-                        value = email,
-                        onValueChange = {email = it},
+                        value = formState.email,
+                        onValueChange = { viewModel.onEvent(FormEvent.EmailChanged(it)) },
                         placeholder = "Email",
-                        isError = false,
-                        errorMessage = "",
+                        isError = formState.emailError != null,
+                        errorMessage = formState.emailError.toString(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
 
                     PasswordTextField(
-                        value = password,
-                        onValueChange = { password = it },
+                        value = formState.password,
+                        onValueChange = { viewModel.onEvent(FormEvent.PasswordChanged(it)) },
                         placeholder = "Password",
                         isVisible = passwordVisibility,
                         onIconClick = { passwordVisibility = !passwordVisibility },
-                        isError = false,
-                        errorMessage = "",
+                        isError = formState.passwordError != null,
+                        errorMessage = formState.passwordError.toString(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
 
-                    PasswordTextField(
-                        value = repeatPassword,
-                        onValueChange = { repeatPassword = it },
-                        placeholder = "Repeat password",
-                        isVisible = repeatPasswordVisibility,
-                        onIconClick = { repeatPasswordVisibility = !repeatPasswordVisibility },
-                        isError = false,
-                        errorMessage = "",
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
+                            .padding(4.dp)
+                    ) {
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = { checked = !checked }
+                        )
+                        Text(
+                            text = "Keep me logged in.",
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Text(
+                            text = "Forgot password?",
+                            modifier = Modifier.clickable {
+                                TODO("Password recovery system or screen")
+                            }
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         shape = MaterialTheme.shapes.large,
-                        onClick = { /*TODO*/ },
+                        onClick = { viewModel.onEvent(FormEvent.Submit) },
                         modifier = Modifier.size(128.dp, 42.dp)
                     ) {
                         Text(
-                            text = "Sign up",
+                            text = "Login",
                             fontSize = 18.sp
                         )
                     }
@@ -129,11 +130,11 @@ fun RegistrationScreen(
             Separator()
             Button(
                 shape = MaterialTheme.shapes.large,
-                onClick = { navController.navigate(LoginScreenRoute) },
+                onClick = { navController.navigate(RegistrationScreenRoute) },
             ) {
                 Text(
-                    text = "I already have an account",
-                    fontSize = 18.sp
+                    "Don't have an account? Sign up",
+                    fontSize = 20.sp
                 )
             }
         }
@@ -142,6 +143,6 @@ fun RegistrationScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun RegistrationScreenPreview() {
-    TODO()
+private fun LoginScreenPreview() {
+    LoginScreen(navController = NavController(LocalContext.current))
 }
