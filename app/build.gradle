@@ -2,11 +2,21 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
     namespace 'pl.mrmatiasz.fitapp'
     compileSdk 34
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "pl.mrmatiasz.fitapp"
@@ -76,4 +86,10 @@ dependencies {
     // Unit tests
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter.engine
+
+    // Dagger hilt
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
+    kapt libs.androidx.hilt.compiler
+    implementation libs.androidx.hilt.navigation.compose
 }
