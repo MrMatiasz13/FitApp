@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.mrmatiasz.fitapp.domain.repository.AuthRepository
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateConfirmPasswordUseCase
@@ -14,6 +15,7 @@ import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateEmailUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidatePasswordUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateUsernameUseCase
 import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
+import pl.mrmatiasz.fitapp.presentation.screens.auth.login_screen.LoginState
 import pl.mrmatiasz.fitapp.util.Resource
 import javax.inject.Inject
 
@@ -28,7 +30,7 @@ class RegistrationViewModel @Inject constructor(
     var formState by mutableStateOf(RegistrationFormState())
 
     private var _registrationState = MutableStateFlow(RegistrationState())
-    val registrationState = _registrationState
+    val registrationState: StateFlow<RegistrationState> = _registrationState
 
     fun onEvent(event: FormEvent) {
         when(event) {
@@ -95,7 +97,7 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.register(username, email, password).collect { result ->
                 when(result) {
-                    is Resource.Loading -> _registrationState.emit(RegistrationState(isLoadings = true))
+                    is Resource.Loading -> _registrationState.emit(RegistrationState(isLoading = true))
 
                     is Resource.Success -> _registrationState.emit(RegistrationState(isSuccessful = "Registration is successful!"))
 

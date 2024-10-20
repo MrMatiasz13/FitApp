@@ -1,5 +1,6 @@
 package pl.mrmatiasz.fitapp.presentation.screens.auth.login_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,8 @@ import pl.mrmatiasz.fitapp.presentation.Logo
 import pl.mrmatiasz.fitapp.presentation.PasswordTextField
 import pl.mrmatiasz.fitapp.presentation.Separator
 import androidx.compose.material3.Checkbox
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -57,9 +60,12 @@ fun LoginScreen(
 
             Box(modifier = Modifier.fillMaxWidth()) {
                 val formState = viewModel.formState
+                val loginState = viewModel.loginState.collectAsState()
 
                 var passwordVisibility by remember { mutableStateOf(false) }
                 var checked by remember { mutableStateOf(false) }
+
+                val context = LocalContext.current
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -124,6 +130,20 @@ fun LoginScreen(
                             text = "Login",
                             fontSize = 18.sp
                         )
+                    }
+
+                    LaunchedEffect(key1 = loginState.value.isSuccessful) {
+                        if(loginState.value.isSuccessful?.isNotBlank() == true) {
+                            val success = loginState.value.isSuccessful
+                            Toast.makeText(context, "$success", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    LaunchedEffect(key1 = loginState.value.isError) {
+                        if(loginState.value.isError?.isNotBlank() == true) {
+                            val error = loginState.value.isError
+                            Toast.makeText(context, "$error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

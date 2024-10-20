@@ -1,21 +1,31 @@
 package pl.mrmatiasz.fitapp.presentation.screens.auth.login_screen
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import pl.mrmatiasz.fitapp.domain.repository.AuthRepository
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateEmailUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidatePasswordUseCase
 import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
+import pl.mrmatiasz.fitapp.presentation.screens.auth.registration_screen.RegistrationState
+import pl.mrmatiasz.fitapp.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val validateEmail: ValidateEmailUseCase,
-    private val validatePassword: ValidatePasswordUseCase
+    private val authRepository: AuthRepository
 ): ViewModel() {
     var formState by mutableStateOf(LoginFormState())
+
+    private var _loginState = MutableStateFlow(LoginState())
+    val loginState: StateFlow<LoginState> = _loginState
 
     fun onEvent(event: FormEvent) {
         when(event) {
@@ -28,29 +38,26 @@ class LoginViewModel @Inject constructor(
             }
 
             is FormEvent.Submit -> {
-                val hasError = listOf(
-                    validateEmail(),
-                    validatePassword()
-                ).any { !it }
-
-                if(!hasError) {
-                    /*TODO*/
-                }
+                login(formState.email, formState.password)
             }
 
             else -> {}
         }
     }
 
-    private fun validateEmail(): Boolean {
-        val result = validateEmail.execute(formState.email)
-        formState = formState.copy(emailError = result.errorMessage)
-        return result.isSuccess
-    }
+    private fun login(email: String, password: String) {
+        viewModelScope.launch {
+            authRepository.login(email, password).collect { result ->
+                when(result) {
+                    is Resource.Loading -> _loginState.emit(LoginState(isLoading = true))
 
-    private fun validatePassword(): Boolean {
-        val result = validatePassword.execute(formState.password)
-        formState = formState.copy(passwordError = result.errorMessage)
-        return result.isSuccess
+                    is Resource.Success -> _loginState.emit(LoginState(isSuccessful = "Login is successful!"))
+
+                    is Resource.Error -> {
+                        _loginState.emit(LoginState(isError = result.message))
+                    }
+                }
+            }
+        }
     }
 }

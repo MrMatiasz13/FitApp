@@ -15,7 +15,13 @@ class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): AuthRepository {
     override suspend fun login(email: String, password: String): Flow<Resource<AuthResult>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(Resource.Loading())
+            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            emit(Resource.Success(result))
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
     }
 
     override suspend fun register(
