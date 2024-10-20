@@ -1,5 +1,6 @@
 package pl.mrmatiasz.fitapp.presentation.screens.auth.registration_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,9 +59,12 @@ fun RegistrationScreen(
 
             Box(modifier = Modifier.fillMaxWidth()) {
                 val formState = viewModel.formState
+                val registrationState = viewModel.registrationState.collectAsState()
 
                 var passwordVisibility by remember { mutableStateOf(false) }
                 var confirmPasswordVisibility by remember { mutableStateOf(false) }
+
+                val context = LocalContext.current
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -124,6 +131,20 @@ fun RegistrationScreen(
                             text = "Sign up",
                             fontSize = 18.sp
                         )
+                    }
+
+                    LaunchedEffect(key1 = registrationState.value.isSuccessful) {
+                        if(registrationState.value.isSuccessful?.isNotBlank() == true) {
+                            val success = registrationState.value.isSuccessful
+                            Toast.makeText(context, "$success", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    LaunchedEffect(key1 = registrationState.value.isError) {
+                        if(registrationState.value.isError?.isNotBlank() == true) {
+                            val error = registrationState.value.isError
+                            Toast.makeText(context, "$error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

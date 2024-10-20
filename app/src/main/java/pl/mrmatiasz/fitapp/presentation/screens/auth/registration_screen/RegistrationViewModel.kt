@@ -4,12 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import pl.mrmatiasz.fitapp.domain.repository.AuthRepository
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateConfirmPasswordUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateEmailUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidatePasswordUseCase
 import pl.mrmatiasz.fitapp.domain.use_case.forms_validation.ValidateUsernameUseCase
 import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
+import pl.mrmatiasz.fitapp.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,9 +22,13 @@ class RegistrationViewModel @Inject constructor(
     private val validateUsername: ValidateUsernameUseCase,
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
-    private val validateConfirmPassword: ValidateConfirmPasswordUseCase
+    private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
+    private val authRepository: AuthRepository
 ): ViewModel() {
     var formState by mutableStateOf(RegistrationFormState())
+
+    private var _registrationState = MutableStateFlow(RegistrationState())
+    val registrationState = _registrationState
 
     fun onEvent(event: FormEvent) {
         when(event) {
@@ -52,7 +61,7 @@ class RegistrationViewModel @Inject constructor(
                 ).any { !it }
 
                 if(!hasError) {
-                    /*TODO*/
+                    register(formState.username, formState.email, formState.password)
                 }
             }
         }
@@ -80,5 +89,21 @@ class RegistrationViewModel @Inject constructor(
         val result = validateConfirmPassword.execute(formState.password, formState.confirmPassword)
         formState = formState.copy(confirmPasswordError = result.errorMessage)
         return result.isSuccess
+    }
+
+    private fun register(username: String, email: String, password: String) {
+        viewModelScope.launch {
+            authRepository.register(username, email, password).collect { result ->
+                when(result) {
+                    is Resource.Loading -> _registrationState.emit(RegistrationState(isLoadings = true))
+
+                    is Resource.Success -> _registrationState.emit(RegistrationState(isSuccessful = "Registration is successful!"))
+
+                    is Resource.Error -> {
+                        _registrationState.emit(RegistrationState(isError = result.message))
+                    }
+                }
+            }
+        }
     }
 }
