@@ -26,10 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pl.mrmatiasz.fitapp.presentation.EmailTextField
-import pl.mrmatiasz.fitapp.presentation.Logo
-import pl.mrmatiasz.fitapp.presentation.PasswordTextField
-import pl.mrmatiasz.fitapp.presentation.Separator
+import pl.mrmatiasz.fitapp.presentation.components.EmailTextField
+import pl.mrmatiasz.fitapp.presentation.components.Logo
+import pl.mrmatiasz.fitapp.presentation.components.PasswordTextField
+import pl.mrmatiasz.fitapp.presentation.components.Separator
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState

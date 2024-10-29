@@ -30,11 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import pl.mrmatiasz.fitapp.presentation.EmailTextField
-import pl.mrmatiasz.fitapp.presentation.FormTextField
-import pl.mrmatiasz.fitapp.presentation.Logo
-import pl.mrmatiasz.fitapp.presentation.PasswordTextField
-import pl.mrmatiasz.fitapp.presentation.Separator
+import pl.mrmatiasz.fitapp.presentation.components.EmailTextField
+import pl.mrmatiasz.fitapp.presentation.components.FormTextField
+import pl.mrmatiasz.fitapp.presentation.components.Logo
+import pl.mrmatiasz.fitapp.presentation.components.PasswordTextField
+import pl.mrmatiasz.fitapp.presentation.components.Separator
 import pl.mrmatiasz.fitapp.presentation.navigation.LoginScreenRoute
 import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
 

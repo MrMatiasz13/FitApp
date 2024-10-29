@@ -1,4 +1,4 @@
-package pl.mrmatiasz.fitapp.presentation
+package pl.mrmatiasz.fitapp.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
