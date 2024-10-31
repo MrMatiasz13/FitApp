@@ -10,3 +10,6 @@ object LoginScreenRoute
 
 @Serializable
 object DashboardScreenRoute
+
+@Serializable
+object CalorieCounterScreenRoute
