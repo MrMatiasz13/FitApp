@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pl.mrmatiasz.fitapp.presentation.components.CalorieBar
+import pl.mrmatiasz.fitapp.presentation.components.MacroTrackingBox
 
 @Composable
 fun CalorieCounterScreen() {
@@ -26,11 +27,7 @@ fun CalorieCounterScreen() {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            CalorieBar(
-                modifier = Modifier.size(150.dp),
-                maxCalories = 3000,
-                currentCalories = 860
-            )
+            MacroTrackingBox()
         }
     }
 }

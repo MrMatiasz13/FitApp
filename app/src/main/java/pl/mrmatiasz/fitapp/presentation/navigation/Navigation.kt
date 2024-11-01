@@ -13,7 +13,7 @@ import pl.mrmatiasz.fitapp.presentation.screens.dashboard_screen.DashboardScreen
 fun Navigation(navHostController: NavHostController) {
     NavHost(
         navController = navHostController,
-        startDestination = CalorieCounterScreenRoute
+        startDestination = DashboardScreenRoute
     ) {
         composable<RegistrationScreenRoute> {
             RegistrationScreen(navHostController)
@@ -24,7 +24,7 @@ fun Navigation(navHostController: NavHostController) {
         }
 
         composable<DashboardScreenRoute> {
-            DashboardScreen()
+            DashboardScreen(navHostController)
         }
 
         composable<CalorieCounterScreenRoute> {

@@ -1,8 +1,11 @@
 package pl.mrmatiasz.fitapp.presentation.screens.dashboard_screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Dashboard
@@ -26,6 +29,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import pl.mrmatiasz.fitapp.presentation.components.CalorieBar
+import pl.mrmatiasz.fitapp.presentation.navigation.CalorieCounterScreenRoute
 
 data class BottomNavItem(
     val title: String,
@@ -35,7 +42,9 @@ data class BottomNavItem(
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    navController: NavController?
+) {
     val navItems = listOf(
         BottomNavItem(
             title = "Dashboard",
@@ -88,12 +97,27 @@ fun DashboardScreen() {
             }
         }
     ) { _ ->
-
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            CalorieBar(
+                maxCalories = 3000,
+                currentCalories = 800,
+                modifier = Modifier
+                    .size(150.dp)
+                    .clickable {
+                        navController?.navigate(CalorieCounterScreenRoute)
+                    }
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun DashboardScreenPreview() {
-    DashboardScreen()
+    DashboardScreen(null)
 }
