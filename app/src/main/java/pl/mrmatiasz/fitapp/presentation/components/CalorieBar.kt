@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -32,6 +33,8 @@ fun CalorieBar(
 
     val remainingCalories by remember { mutableIntStateOf(maxCalories - currentCalories) }
 
+    val littleGrey: Color = MaterialTheme.colorScheme.tertiary
+
     Box(modifier = modifier) {
         Canvas(
             modifier = Modifier
@@ -48,7 +51,7 @@ fun CalorieBar(
             val textSpacing = textSizeCalories * 0.8f
 
             drawCircle(
-                color = Color.LightGray,
+                color = littleGrey,
                 radius = (size.minDimension - strokeWidth) / 2f,
                 center = center,
                 style = Stroke(

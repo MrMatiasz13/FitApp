@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pl.mrmatiasz.fitapp.presentation.ui.theme.FitAppTheme
 
 @Composable
 fun MacroTrackingBox() {
@@ -31,9 +33,8 @@ fun MacroTrackingBox() {
         modifier = Modifier
             .fillMaxWidth()
             .height(245.dp)
-            .padding(8.dp)
             .background(
-                color = Color.Gray,
+                color = Color(61, 61, 59),
                 shape = RoundedCornerShape(45.dp)
             )
             .border(3.dp, Color.LightGray, RoundedCornerShape(45.dp))
@@ -48,7 +49,7 @@ fun MacroTrackingBox() {
                 maxCalories = 3000,
                 currentCalories = 765,
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(200.dp)
             )
 
             Column(
@@ -73,7 +74,7 @@ fun MacroTrackingBox() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            Color.LightGray,
+                            color = MaterialTheme.colorScheme.tertiary,
                             shape = RoundedCornerShape(10.dp)
                         )
                         .padding(4.dp)
@@ -103,7 +104,7 @@ fun MacroText(text: String) {
         fontSize = 14.sp,
         modifier = Modifier
             .background(
-                Color.LightGray,
+                color = MaterialTheme.colorScheme.tertiary,
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(6.dp)
@@ -114,5 +115,7 @@ fun MacroText(text: String) {
 @Preview(showBackground = true)
 @Composable
 private fun MacroTrackingBoxPreview() {
-    MacroTrackingBox()
+    FitAppTheme(darkTheme = true, dynamicColor = false) {
+        MacroTrackingBox()
+    }
 }
