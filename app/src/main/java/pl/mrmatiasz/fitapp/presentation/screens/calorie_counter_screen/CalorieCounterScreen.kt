@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -64,6 +65,14 @@ val testProductList = listOf(
 
 @Composable
 fun CalorieCounterScreen() {
+    val listOfMeals = listOf(
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Snacks",
+        "Supper"
+    )
+
     Surface(
         color = MaterialTheme.colorScheme.background
     ) {
@@ -95,18 +104,26 @@ fun CalorieCounterScreen() {
                     .padding(horizontal = 8.dp)
             )
 
-            MealEntryDropdown()
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                items(listOfMeals) { meal ->
+                    MealEntryDropdown(meal)
+                }
+            }
         }
     }
 }
 
 @Composable
-fun MealEntryDropdown() {
+fun MealEntryDropdown(name: String) {
     var isDropDownExtended by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(4.dp)
             .border(2.dp, Color.Black, RoundedCornerShape(4.dp))
             .clickable {
                 isDropDownExtended = !isDropDownExtended
@@ -135,7 +152,7 @@ fun MealEntryDropdown() {
                     )
 
                     Text(
-                        text = "Breakfast",
+                        text = name,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -166,6 +183,7 @@ fun MealEntryDropdown() {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .heightIn(max = 300.dp)
                         .padding(8.dp)
                 ) {
                     items(testProductList) { product ->
@@ -221,6 +239,6 @@ fun ProductRow(product: Product) {
 @Composable
 private fun CalorieCounterScreenPreview() {
     FitAppTheme(darkTheme = true, dynamicColor = false) {
-        MealEntryDropdown()
+        CalorieCounterScreen()
     }
 }
