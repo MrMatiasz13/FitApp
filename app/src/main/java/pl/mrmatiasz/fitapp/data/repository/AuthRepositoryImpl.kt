@@ -2,6 +2,7 @@ package pl.mrmatiasz.fitapp.data.repository
 
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,7 +12,7 @@ import pl.mrmatiasz.fitapp.util.Resource
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
 ): AuthRepository {
     override suspend fun login(email: String, password: String): Flow<Resource<AuthResult>> {
         return flow {
@@ -51,5 +52,9 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Resource.Error(e.message ?: "An unexpected error occurred"))
             }
         }
+    }
+
+    override fun getCurrentUser(): FirebaseUser {
+        return firebaseAuth.currentUser!!
     }
 }

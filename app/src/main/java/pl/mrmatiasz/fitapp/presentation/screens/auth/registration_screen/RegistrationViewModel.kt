@@ -25,7 +25,7 @@ class RegistrationViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateConfirmPassword: ValidateConfirmPasswordUseCase,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ): ViewModel() {
     var formState by mutableStateOf(RegistrationFormState())
 
