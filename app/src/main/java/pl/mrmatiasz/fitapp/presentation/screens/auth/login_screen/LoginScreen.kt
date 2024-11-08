@@ -36,6 +36,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import pl.mrmatiasz.fitapp.presentation.navigation.DashboardScreenRoute
 import pl.mrmatiasz.fitapp.presentation.navigation.RegistrationScreenRoute
 import pl.mrmatiasz.fitapp.presentation.screens.auth.FormEvent
 
@@ -136,6 +137,7 @@ fun LoginScreen(
                         if(loginState.value.isSuccessful?.isNotBlank() == true) {
                             val success = loginState.value.isSuccessful
                             Toast.makeText(context, "$success", Toast.LENGTH_SHORT).show()
+                            navController.navigate(DashboardScreenRoute)
                         }
                     }
 

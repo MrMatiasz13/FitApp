@@ -13,7 +13,7 @@ import pl.mrmatiasz.fitapp.presentation.screens.dashboard_screen.DashboardScreen
 fun Navigation(navHostController: NavHostController) {
     NavHost(
         navController = navHostController,
-        startDestination = LoginScreenRoute
+        startDestination = DashboardScreenRoute
     ) {
         composable<RegistrationScreenRoute> {
             RegistrationScreen(navHostController)
