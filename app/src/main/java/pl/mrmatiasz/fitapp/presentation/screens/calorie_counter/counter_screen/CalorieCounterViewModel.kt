@@ -1,4 +1,4 @@
-package pl.mrmatiasz.fitapp.presentation.screens.calorie_counter_screen
+package pl.mrmatiasz.fitapp.presentation.screens.calorie_counter.counter_screen
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +8,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalorieCounterViewModel @Inject constructor(): ViewModel() {
+
+    // list of meals
     var breakfastList = MutableStateFlow<List<Product>>(emptyList())
     var snackList = MutableStateFlow<List<Product>>(emptyList())
     var lunchList = MutableStateFlow<List<Product>>(emptyList())

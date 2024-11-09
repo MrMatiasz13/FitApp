@@ -1,4 +1,4 @@
-package pl.mrmatiasz.fitapp.presentation.screens.calorie_counter_screen
+package pl.mrmatiasz.fitapp.presentation.screens.calorie_counter.counter_screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -23,16 +23,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,15 +42,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import pl.mrmatiasz.fitapp.data.model.Product
 import pl.mrmatiasz.fitapp.presentation.components.MacroTrackingBox
+import pl.mrmatiasz.fitapp.presentation.navigation.AddFoodScreenRoute
 import pl.mrmatiasz.fitapp.presentation.ui.theme.FitAppTheme
 
 val fireIconColor = Color(242, 125, 12)
 
 @Composable
 fun CalorieCounterScreen(
+    navController: NavController,
     viewModel: CalorieCounterViewModel = hiltViewModel()
 ) {
     val breakfastList = viewModel.breakfastList
@@ -101,11 +98,11 @@ fun CalorieCounterScreen(
                     .fillMaxSize()
             ) {
                 item {
-                    MealEntryDropdown(name = "Breakfast", listOfProducts = breakfastList)
-                    MealEntryDropdown(name = "Snack I", listOfProducts = snackList)
-                    MealEntryDropdown(name = "Lunch", listOfProducts = lunchList)
-                    MealEntryDropdown(name = "Snack II", listOfProducts = secondSnackList)
-                    MealEntryDropdown(name = "Dinner", listOfProducts = dinnerList)
+                    MealEntryDropdown(name = "Breakfast", listOfProducts = breakfastList, navController)
+                    MealEntryDropdown(name = "Snack I", listOfProducts = snackList, navController)
+                    MealEntryDropdown(name = "Lunch", listOfProducts = lunchList, navController)
+                    MealEntryDropdown(name = "Snack II", listOfProducts = secondSnackList, navController)
+                    MealEntryDropdown(name = "Dinner", listOfProducts = dinnerList, navController)
                 }
             }
         }
@@ -115,10 +112,10 @@ fun CalorieCounterScreen(
 @Composable
 fun MealEntryDropdown(
     name: String,
-    listOfProducts: MutableStateFlow<List<Product>>
+    listOfProducts: MutableStateFlow<List<Product>>,
+    navController: NavController
 ) {
     var isDropDownExtended by remember { mutableStateOf(false) }
-    var isDialogOpen by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -159,7 +156,7 @@ fun MealEntryDropdown(
                 }
 
                 Button(
-                    onClick = { isDialogOpen = true },
+                    onClick = { navController.navigate(AddFoodScreenRoute) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary,
                         contentColor = Color.White
@@ -193,12 +190,6 @@ fun MealEntryDropdown(
                 }
             }
         }
-    }
-
-    if(isDialogOpen) {
-        AddProductDialog(
-            onCancel = { isDialogOpen = false },
-        )
     }
 }
 
@@ -238,171 +229,10 @@ fun ProductRow(product: Product) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddProductDialog(
-    onCancel: () -> Unit,
-) {
-    var searchValue by remember { mutableStateOf("") }
-
-    BasicAlertDialog(
-        onDismissRequest = {
-            searchValue = ""
-            onCancel()
-        }
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
-                    .padding(8.dp)
-            ) {
-
-                val listOfLastProducts = listOf(
-                    Product(
-                        name = "Banana",
-                        calories = 100,
-                        protein = 10,
-                        fat = 10,
-                        carbs = 10
-                    ),
-
-                    Product(
-                        name = "Apple",
-                        calories = 59,
-                        protein = 10,
-                        fat = 10,
-                        carbs = 10
-                    )
-                )
-
-                Text(
-                    text = "Add Product",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp)
-                )
-
-                OutlinedTextField(
-                    value = searchValue,
-                    onValueChange = { searchValue = it },
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
-                    },
-                    placeholder = { Text(text = "Search for product") },
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Last products:"
-                        )
-
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(max = 200.dp)
-                                .border(1.dp, Color.White, RoundedCornerShape(4.dp))
-                                .padding(4.dp)
-                        ) {
-                            items(listOfLastProducts) { product ->
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 4.dp, vertical = 8.dp)
-                                        .clickable {
-                                            // TODO: Add product to list
-                                            searchValue = ""
-                                            onCancel()
-                                        }
-                                ) {
-                                    Text(
-                                        text = product.name,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-
-                                    Box(modifier = Modifier) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.LocalFireDepartment,
-                                                contentDescription = "Local Fire Department",
-                                                tint = fireIconColor
-                                            )
-
-                                            Text(
-                                                text = "${product.calories} cals",
-                                                fontSize = 18.sp,
-                                                fontWeight = FontWeight.SemiBold
-                                            )
-                                        }
-                                    }
-                                }
-                                if(product != listOfLastProducts.last()) {
-                                    HorizontalDivider()
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = {
-                            searchValue = ""
-                            onCancel()
-                        },
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(text = "Cancel")
-                    }
-
-                    Button(
-                        onClick = {
-                            // TODO: Add product to list
-                            searchValue = ""
-                            onCancel()
-                        },
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(text = "Add")
-                    }
-                }
-            }
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun CalorieCounterScreenPreview() {
     FitAppTheme(darkTheme = true, dynamicColor = false) {
-        AddProductDialog(onCancel = {})
+
     }
 }

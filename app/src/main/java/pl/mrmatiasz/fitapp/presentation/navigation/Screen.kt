@@ -13,3 +13,6 @@ object DashboardScreenRoute
 
 @Serializable
 object CalorieCounterScreenRoute
+
+@Serializable
+object AddFoodScreenRoute

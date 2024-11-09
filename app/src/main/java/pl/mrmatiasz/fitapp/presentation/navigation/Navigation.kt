@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import pl.mrmatiasz.fitapp.presentation.screens.auth.login_screen.LoginScreen
 import pl.mrmatiasz.fitapp.presentation.screens.auth.registration_screen.RegistrationScreen
-import pl.mrmatiasz.fitapp.presentation.screens.calorie_counter_screen.CalorieCounterScreen
+import pl.mrmatiasz.fitapp.presentation.screens.calorie_counter.add_food_screen.AddFoodScreen
+import pl.mrmatiasz.fitapp.presentation.screens.calorie_counter.counter_screen.CalorieCounterScreen
 import pl.mrmatiasz.fitapp.presentation.screens.dashboard_screen.DashboardScreen
 
 @Composable
@@ -28,7 +29,11 @@ fun Navigation(navHostController: NavHostController) {
         }
 
         composable<CalorieCounterScreenRoute> {
-            CalorieCounterScreen()
+            CalorieCounterScreen(navHostController)
+        }
+
+        composable<AddFoodScreenRoute> {
+            AddFoodScreen(navHostController)
         }
     }
 }
